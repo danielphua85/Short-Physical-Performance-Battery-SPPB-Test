@@ -1,0 +1,1052 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Coach Daniel — SPPB Test App</title>
+  <meta name="theme-color" content="#0b2a1f" />
+  <style>
+    :root{
+      --bg:#07110d;
+      --card:#0c1c16;
+      --text:#e8f3ee;
+      --muted:#b7c6bf;
+      --accent:#34d399;
+      --line:rgba(232,243,238,.12);
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius:16px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      background: radial-gradient(1200px 600px at 20% 0%, rgba(52,211,153,.12), transparent 60%),
+                  radial-gradient(1000px 700px at 80% 20%, rgba(59,130,246,.10), transparent 60%),
+                  var(--bg);
+      color:var(--text);
+    }
+    .wrap{max-width:980px;margin:0 auto;padding:18px 16px 48px;}
+    header{
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
+      padding:12px 0 6px;position:sticky;top:0;
+      background: linear-gradient(to bottom, rgba(7,17,13,.92), rgba(7,17,13,.70), rgba(7,17,13,0));
+      backdrop-filter: blur(8px);z-index:10;
+    }
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{
+      width:38px;height:38px;border-radius:12px;
+      background: linear-gradient(145deg, rgba(52,211,153,.30), rgba(52,211,153,.06));
+      border:1px solid var(--line);box-shadow: var(--shadow);
+      display:grid;place-items:center;font-weight:900;letter-spacing:.5px;
+    }
+    .title{line-height:1.15}
+    .title h1{margin:0;font-size:16px}
+    .title p{margin:2px 0 0;color:var(--muted);font-size:12px}
+    .pill{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:8px 10px;border:1px solid var(--line);
+      border-radius:999px;background: rgba(255,255,255,.04);
+      color:var(--muted);font-size:12px;white-space:nowrap;
+    }
+    .grid{
+      display:grid;grid-template-columns:1.1fr .9fr;gap:14px;margin-top:14px;
+    }
+    @media (max-width:860px){.grid{grid-template-columns:1fr}}
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border:1px solid var(--line);border-radius: var(--radius);
+      padding:16px;box-shadow: var(--shadow);
+    }
+    .card h2{margin:0 0 10px;font-size:16px}
+    .card h3{margin:14px 0 8px;font-size:14px}
+    .muted{color:var(--muted)}
+    .small{font-size:12px}
+    .row{display:flex;gap:10px;flex-wrap:wrap}
+    .row>*{flex:1}
+    label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px}
+    input,select,textarea{
+      width:100%;padding:11px 12px;border-radius:12px;
+      border:1px solid var(--line);background: rgba(0,0,0,.25);
+      color:var(--text);outline:none;
+    }
+    textarea{min-height:86px;resize:vertical}
+    .btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+    button{
+      appearance:none;border:none;padding:11px 12px;border-radius:12px;
+      font-weight:800;cursor:pointer;
+      transition: transform .04s ease, opacity .2s ease;
+    }
+    button:active{transform:translateY(1px)}
+    .primary{background:var(--accent);color:#062015}
+    .ghost{background: rgba(255,255,255,.06);color:var(--text);border:1px solid var(--line)}
+    .mini{padding:8px 10px;border-radius:10px;font-size:12px;font-weight:800}
+    .hr{height:1px;background:var(--line);margin:14px 0}
+    .tag{
+      display:inline-flex;padding:4px 10px;border-radius:999px;border:1px solid var(--line);
+      background: rgba(52,211,153,.10);color:#bff3dc;font-size:12px;font-weight:900;
+    }
+    .tag.gray{background: rgba(255,255,255,.05);color:var(--muted)}
+    .check{
+      display:flex;gap:10px;align-items:flex-start;
+      padding:10px 12px;border:1px solid var(--line);
+      border-radius:12px;background: rgba(0,0,0,.18);
+    }
+    .check input{width:18px;height:18px;margin-top:2px}
+    .hidden{display:none!important}
+    .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+    @media (max-width:560px){.kpi{grid-template-columns:repeat(2,1fr)}}
+    .kpi .box{
+      background: rgba(0,0,0,.18);border:1px solid var(--line);
+      border-radius:14px;padding:10px 12px;
+    }
+    .kpi .n{font-size:22px;font-weight:950}
+    .kpi .t{font-size:12px;color:var(--muted)}
+    .stepper{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+    .step{
+      padding:7px 10px;border-radius:999px;border:1px solid var(--line);
+      background: rgba(255,255,255,.05);color:var(--muted);
+      font-size:12px;font-weight:950;
+    }
+    .step.on{background: rgba(52,211,153,.16);color:#c9f6e2;border-color: rgba(52,211,153,.28)}
+    .timer{
+      font-variant-numeric: tabular-nums;
+      font-size:44px;font-weight:950;letter-spacing:.5px;margin:6px 0 10px;
+    }
+    .note{
+      border-left:3px solid rgba(52,211,153,.35);
+      padding:10px 12px;background: rgba(0,0,0,.16);
+      border-radius:12px;color:var(--muted);font-size:12px;
+    }
+    table{
+      width:100%;border-collapse:collapse;margin-top:10px;font-size:12px;
+      border-radius:14px;border:1px solid var(--line);overflow:hidden;
+    }
+    th,td{padding:10px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+    th{background: rgba(255,255,255,.05);font-weight:950}
+    tr:last-child td{border-bottom:none}
+    .rightcol .card{position:sticky;top:86px}
+    @media (max-width:860px){.rightcol .card{position:static}}
+    .toast{
+      position:fixed;left:50%;bottom:18px;transform:translateX(-50%);
+      padding:10px 12px;border-radius:999px;border:1px solid var(--line);
+      background: rgba(0,0,0,.75);color:var(--text);
+      font-size:12px;box-shadow: var(--shadow);
+      opacity:0;pointer-events:none;transition:opacity .25s ease;z-index:999;
+    }
+    .toast.show{opacity:1}
+    .footerActions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+    .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;}
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo">CD</div>
+        <div class="title">
+          <h1>Coach Daniel — SPPB Test App</h1>
+          <p>Mobile-first • Offline-friendly (local) • Export PDF/JSON</p>
+        </div>
+      </div>
+      <div class="pill" id="statusPill">Step: <span id="statusStep" class="mono">WELCOME</span></div>
+    </header>
+
+    <div class="grid">
+      <div class="leftcol">
+        <!-- WELCOME -->
+        <section class="card" id="screenWelcome">
+          <span class="tag">SPPB (0–12)</span>
+          <span class="tag gray" style="margin-left:8px">Coach Mode</span>
+
+          <h2 style="margin-top:10px">Welcome 👋</h2>
+          <p class="muted small">
+            Welcome to <b>Coach Daniel SPPB Test</b>. This app guides the standard Short Physical Performance Battery:
+            <b>Balance</b>, <b>Gait Speed</b>, and <b>Chair Stand</b>.
+          </p>
+
+          <div class="hr"></div>
+
+          <h3>Safety checklist (must do)</h3>
+          <div class="check">
+            <input type="checkbox" id="safety1" />
+            <div>
+              <div><b>Safe environment</b></div>
+              <div class="muted small">Flat floor, good lighting, clear walkway, tape lines marked (3m/4m), stable chair against wall.</div>
+            </div>
+          </div>
+          <div class="check" style="margin-top:10px">
+            <input type="checkbox" id="safety2" />
+            <div>
+              <div><b>Spotter ready</b></div>
+              <div class="muted small">Coach stands close. Stop if pain, dizziness, chest discomfort, or unsafe gait.</div>
+            </div>
+          </div>
+          <div class="check" style="margin-top:10px">
+            <input type="checkbox" id="safety3" />
+            <div>
+              <div><b>Non-medical device</b></div>
+              <div class="muted small">This app assists timing/scoring. Coach/clinician makes final judgment.</div>
+            </div>
+          </div>
+
+          <div class="hr"></div>
+
+          <h3>How scoring works</h3>
+          <p class="muted small">
+            Each section is scored <b>0–4</b>. Total score is <b>0–12</b>. Higher is better.
+          </p>
+
+          <details style="margin-top:10px">
+            <summary style="cursor:pointer;font-weight:900">Show quick scoring tables (reference)</summary>
+
+            <h3 style="margin-top:12px">Balance (0–4)</h3>
+            <table>
+              <tr><th>Stance</th><th>Rule</th><th>Points</th></tr>
+              <tr><td>Side-by-side</td><td>Hold 10s</td><td>1</td></tr>
+              <tr><td>Semi-tandem</td><td>Hold 10s</td><td>1</td></tr>
+              <tr><td>Tandem</td><td>Hold 10s</td><td>2</td></tr>
+              <tr><td>Tandem</td><td>Hold 3.00–9.99s</td><td>1</td></tr>
+              <tr><td>Tandem</td><td>&lt; 3.00s (or not attempted)</td><td>0</td></tr>
+            </table>
+
+            <h3>Gait Speed (0–4)</h3>
+            <table>
+              <tr><th>Course</th><th>Time (seconds)</th><th>Points</th></tr>
+              <tr><td>4m</td><td>&gt; 8.70</td><td>1</td></tr>
+              <tr><td>4m</td><td>6.21–8.70</td><td>2</td></tr>
+              <tr><td>4m</td><td>4.82–6.20</td><td>3</td></tr>
+              <tr><td>4m</td><td>&lt; 4.82</td><td>4</td></tr>
+              <tr><td>3m</td><td>&gt; 6.52</td><td>1</td></tr>
+              <tr><td>3m</td><td>4.66–6.52</td><td>2</td></tr>
+              <tr><td>3m</td><td>3.62–4.65</td><td>3</td></tr>
+              <tr><td>3m</td><td>&lt; 3.62</td><td>4</td></tr>
+            </table>
+
+            <h3>Chair Stand (0–4)</h3>
+            <table>
+              <tr><th>Rule</th><th>Points</th></tr>
+              <tr><td>Unable to complete 5 stands OR &gt;60s</td><td>0</td></tr>
+              <tr><td>≥ 16.70s</td><td>1</td></tr>
+              <tr><td>13.70–16.69s</td><td>2</td></tr>
+              <tr><td>11.20–13.69s</td><td>3</td></tr>
+              <tr><td>≤ 11.19s</td><td>4</td></tr>
+            </table>
+          </details>
+
+          <div class="btns">
+            <button class="primary" id="btnStartSetup">Start SPPB</button>
+            <button class="ghost" id="btnLoadDraft">Load last draft</button>
+          </div>
+        </section>
+
+        <!-- SETUP / CONSENT -->
+        <section class="card hidden" id="screenSetup">
+          <h2>Participant details & consent</h2>
+          <p class="muted small">Data stays on this device unless you export.</p>
+
+          <div class="row" style="margin-top:10px">
+            <div>
+              <label>Participant name</label>
+              <input id="pName" placeholder="e.g., Mdm Tan" />
+            </div>
+            <div>
+              <label>Age</label>
+              <input id="pAge" inputmode="numeric" placeholder="e.g., 72" />
+            </div>
+          </div>
+
+          <div class="row" style="margin-top:10px">
+            <div>
+              <label>Sex</label>
+              <select id="pSex">
+                <option value="">Select…</option>
+                <option>F</option>
+                <option>M</option>
+              </select>
+            </div>
+            <div>
+              <label>Mobile (optional)</label>
+              <input id="pMobile" inputmode="tel" placeholder="e.g., 9xxxxxxx" />
+            </div>
+          </div>
+
+          <div class="row" style="margin-top:10px">
+            <div>
+              <label>Walkway length</label>
+              <select id="walkLen">
+                <option value="4">4 meters (recommended)</option>
+                <option value="3">3 meters</option>
+              </select>
+            </div>
+            <div>
+              <label>Date/Time</label>
+              <input id="testDate" />
+            </div>
+          </div>
+
+          <div class="hr"></div>
+
+          <div class="check">
+            <input type="checkbox" id="consent1" />
+            <div>
+              <div><b>Consent</b></div>
+              <div class="muted small">I understand this is a functional test. I may stop anytime. Not a medical diagnosis.</div>
+            </div>
+          </div>
+          <div class="check" style="margin-top:10px">
+            <input type="checkbox" id="consent2" />
+            <div>
+              <div><b>Data handling</b></div>
+              <div class="muted small">I consent to storing this session on the current device, and exporting if requested.</div>
+            </div>
+          </div>
+
+          <div style="margin-top:10px">
+            <label>Typed signature (participant / caregiver)</label>
+            <input id="signature" placeholder="Type full name as signature" />
+          </div>
+
+          <div class="btns">
+            <button class="primary" id="btnToSelect">Continue</button>
+            <button class="ghost" id="btnBackWelcome">Back</button>
+          </div>
+        </section>
+
+        <!-- TEST SELECTION -->
+        <section class="card hidden" id="screenSelect">
+          <h2>Select tests</h2>
+          <p class="muted small">Run all 3 tests (recommended) or only what you need.</p>
+
+          <div class="check">
+            <input type="checkbox" id="selBalance" checked />
+            <div>
+              <div><b>Balance</b> (side-by-side → semi-tandem → tandem)</div>
+              <div class="muted small">Timed holds with safety spotting.</div>
+            </div>
+          </div>
+          <div class="check" style="margin-top:10px">
+            <input type="checkbox" id="selGait" checked />
+            <div>
+              <div><b>Gait speed</b> (2 trials, record fastest)</div>
+              <div class="muted small">Usual walking speed. Aid allowed if needed.</div>
+            </div>
+          </div>
+          <div class="check" style="margin-top:10px">
+            <input type="checkbox" id="selChair" checked />
+            <div>
+              <div><b>Chair stand</b> (screening + timed 5x sit-to-stand)</div>
+              <div class="muted small">Arms crossed. Stop if unsafe/fatigued.</div>
+            </div>
+          </div>
+
+          <div class="note" style="margin-top:12px">
+            Tip: v1 uses pro-grade manual timers (most reliable). v2 can add camera pose assist.
+          </div>
+
+          <div class="btns">
+            <button class="primary" id="btnBeginTests">Begin</button>
+            <button class="ghost" id="btnBackSetup">Back</button>
+          </div>
+        </section>
+
+        <!-- TEST RUNNER -->
+        <section class="card hidden" id="screenTest">
+          <div class="row" style="align-items:center">
+            <div>
+              <h2 style="margin:0">Test session</h2>
+              <p class="muted small" id="sessionLine" style="margin:4px 0 0"></p>
+            </div>
+            <div style="min-width:230px">
+              <div class="stepper" id="stepper"></div>
+            </div>
+          </div>
+
+          <div class="hr"></div>
+
+          <!-- BALANCE -->
+          <div id="panelBalance" class="hidden">
+            <h3>1) Balance Test</h3>
+            <p class="muted small">Complete in order. If cannot hold 10s, stop balance tests and move on.</p>
+
+            <div class="row" style="margin-top:10px">
+              <div class="card" style="padding:12px;background:rgba(0,0,0,.14);border-radius:14px;border:1px solid var(--line)">
+                <div class="muted small"><b>Side-by-side</b> — feet together</div>
+                <div class="timer mono" id="tBal1">00.00</div>
+                <div class="btns">
+                  <button class="primary mini" onclick="timerStart('bal1')">Start</button>
+                  <button class="ghost mini" onclick="timerStop('bal1')">Stop</button>
+                  <button class="ghost mini" onclick="timerReset('bal1')">Reset</button>
+                </div>
+                <div class="row" style="margin-top:8px">
+                  <div>
+                    <label>Seconds held</label>
+                    <input id="bal1sec" inputmode="decimal" placeholder="e.g., 10.00" />
+                  </div>
+                  <div>
+                    <label>Held 10s?</label>
+                    <select id="bal1held">
+                      <option value="">Select…</option>
+                      <option value="yes">Yes</option>
+                      <option value="no">No / Not attempted</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card" style="padding:12px;background:rgba(0,0,0,.14);border-radius:14px;border:1px solid var(--line)">
+                <div class="muted small"><b>Semi-tandem</b> — heel beside big toe</div>
+                <div class="timer mono" id="tBal2">00.00</div>
+                <div class="btns">
+                  <button class="primary mini" onclick="timerStart('bal2')">Start</button>
+                  <button class="ghost mini" onclick="timerStop('bal2')">Stop</button>
+                  <button class="ghost mini" onclick="timerReset('bal2')">Reset</button>
+                </div>
+                <div class="row" style="margin-top:8px">
+                  <div>
+                    <label>Seconds held</label>
+                    <input id="bal2sec" inputmode="decimal" placeholder="e.g., 10.00" />
+                  </div>
+                  <div>
+                    <label>Held 10s?</label>
+                    <select id="bal2held">
+                      <option value="">Select…</option>
+                      <option value="yes">Yes</option>
+                      <option value="no">No / Not attempted</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card" style="margin-top:12px;padding:12px;background:rgba(0,0,0,.14);border-radius:14px;border:1px solid var(--line)">
+              <div class="muted small"><b>Tandem</b> — heel-to-toe</div>
+              <div class="timer mono" id="tBal3">00.00</div>
+              <div class="btns">
+                <button class="primary mini" onclick="timerStart('bal3')">Start</button>
+                <button class="ghost mini" onclick="timerStop('bal3')">Stop</button>
+                <button class="ghost mini" onclick="timerReset('bal3')">Reset</button>
+              </div>
+              <div class="row" style="margin-top:8px">
+                <div>
+                  <label>Seconds held (0–10)</label>
+                  <input id="bal3sec" inputmode="decimal" placeholder="e.g., 7.20" />
+                </div>
+                <div>
+                  <label>Not attempted?</label>
+                  <select id="bal3na">
+                    <option value="no">No</option>
+                    <option value="yes">Yes (score 0)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="note" style="margin-top:10px">
+                Scoring: side-by-side 10s=1; semi-tandem 10s=1; tandem 10s=2, tandem 3–9.99s=1, tandem &lt;3s or not attempted=0.
+              </div>
+            </div>
+          </div>
+
+          <!-- GAIT -->
+          <div id="panelGait" class="hidden">
+            <h3>2) Gait Speed Test</h3>
+            <p class="muted small">Two trials at usual pace. Record the <b>faster</b> time.</p>
+
+            <div class="row" style="margin-top:10px">
+              <div class="card" style="padding:12px;background:rgba(0,0,0,.14);border-radius:14px;border:1px solid var(--line)">
+                <div class="muted small"><b>Trial 1</b></div>
+                <div class="timer mono" id="tGait1">00.00</div>
+                <div class="btns">
+                  <button class="primary mini" onclick="timerStart('gait1')">Start</button>
+                  <button class="ghost mini" onclick="timerStop('gait1')">Stop</button>
+                  <button class="ghost mini" onclick="timerReset('gait1')">Reset</button>
+                </div>
+                <div style="margin-top:8px">
+                  <label>Time (seconds)</label>
+                  <input id="gait1sec" inputmode="decimal" placeholder="e.g., 6.45" />
+                </div>
+              </div>
+
+              <div class="card" style="padding:12px;background:rgba(0,0,0,.14);border-radius:14px;border:1px solid var(--line)">
+                <div class="muted small"><b>Trial 2</b></div>
+                <div class="timer mono" id="tGait2">00.00</div>
+                <div class="btns">
+                  <button class="primary mini" onclick="timerStart('gait2')">Start</button>
+                  <button class="ghost mini" onclick="timerStop('gait2')">Stop</button>
+                  <button class="ghost mini" onclick="timerReset('gait2')">Reset</button>
+                </div>
+                <div style="margin-top:8px">
+                  <label>Time (seconds)</label>
+                  <input id="gait2sec" inputmode="decimal" placeholder="e.g., 6.12" />
+                </div>
+              </div>
+            </div>
+
+            <div class="row" style="margin-top:10px">
+              <div>
+                <label>Unable / not attempted?</label>
+                <select id="gaitNA">
+                  <option value="no">No</option>
+                  <option value="yes">Yes (score 0)</option>
+                </select>
+              </div>
+              <div>
+                <label>Course length</label>
+                <input id="gaitLen" disabled />
+              </div>
+            </div>
+
+            <div class="note" style="margin-top:10px">
+              Scoring uses the faster time. Cut points depend on 3m vs 4m.
+            </div>
+          </div>
+
+          <!-- CHAIR -->
+          <div id="panelChair" class="hidden">
+            <h3>3) Chair Stand Test</h3>
+            <p class="muted small">First do a single untimed chair stand (arms crossed). If unable without arms, score = 0.</p>
+
+            <div class="row" style="margin-top:10px">
+              <div>
+                <label>Single chair stand (without using arms)</label>
+                <select id="chairSingle">
+                  <option value="">Select…</option>
+                  <option value="pass">Pass (continue to 5x)</option>
+                  <option value="fail">Fail (score 0)</option>
+                </select>
+              </div>
+              <div>
+                <label>Unable/not attempted?</label>
+                <select id="chairNA">
+                  <option value="no">No</option>
+                  <option value="yes">Yes (score 0)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="card" style="margin-top:12px;padding:12px;background:rgba(0,0,0,.14);border-radius:14px;border:1px solid var(--line)">
+              <div class="muted small"><b>Timed 5x sit-to-stand</b> (arms crossed)</div>
+              <div class="timer mono" id="tChair">00.00</div>
+              <div class="btns">
+                <button class="primary mini" onclick="timerStart('chair')">Start</button>
+                <button class="ghost mini" onclick="timerStop('chair')">Stop</button>
+                <button class="ghost mini" onclick="timerReset('chair')">Reset</button>
+              </div>
+              <div class="row" style="margin-top:8px">
+                <div>
+                  <label>Time for 5 stands (seconds)</label>
+                  <input id="chair5sec" inputmode="decimal" placeholder="e.g., 14.30" />
+                </div>
+                <div>
+                  <label>Completed 5 stands within 60s?</label>
+                  <select id="chairComplete">
+                    <option value="">Select…</option>
+                    <option value="yes">Yes</option>
+                    <option value="no">No (score 0)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="note" style="margin-top:10px">
+                Chair scoring: ≥16.70s=1, 13.70–16.69=2, 11.20–13.69=3, ≤11.19=4; incomplete or &gt;60s=0.
+              </div>
+            </div>
+          </div>
+
+          <div class="hr"></div>
+
+          <div class="btns">
+            <button class="primary" id="btnCompute">Compute score</button>
+            <button class="ghost" id="btnSaveDraft">Save draft</button>
+            <button class="ghost" id="btnBackSelect">Back</button>
+          </div>
+        </section>
+
+        <!-- RESULTS -->
+        <section class="card hidden" id="screenResults">
+          <h2>Results</h2>
+          <p class="muted small" id="resultHeader" style="margin-top:6px"></p>
+
+          <div class="kpi" style="margin-top:10px">
+            <div class="box"><div class="n mono" id="kBal">—</div><div class="t">Balance (0–4)</div></div>
+            <div class="box"><div class="n mono" id="kGait">—</div><div class="t">Gait (0–4)</div></div>
+            <div class="box"><div class="n mono" id="kChair">—</div><div class="t">Chair (0–4)</div></div>
+            <div class="box"><div class="n mono" id="kTotal">—</div><div class="t">Total (0–12)</div></div>
+          </div>
+
+          <div class="note" style="margin-top:12px" id="interpretation">—</div>
+
+          <h3 style="margin-top:14px">Session JSON (for records)</h3>
+          <pre class="mono" id="resultJson" style="white-space:pre-wrap;margin:0;background:rgba(0,0,0,.2);border:1px solid var(--line);border-radius:14px;padding:12px;font-size:12px;color:#d7e8e0"></pre>
+
+          <div class="footerActions">
+            <button class="primary" id="btnExportPDF">Export PDF</button>
+            <button class="ghost" id="btnExportJSON">Export JSON</button>
+            <button class="ghost" id="btnNewTest">New test</button>
+          </div>
+        </section>
+      </div>
+
+      <!-- RIGHT: Coach Panel -->
+      <div class="rightcol">
+        <aside class="card">
+          <h2>Coach panel</h2>
+          <p class="muted small">Quick navigation + reminders.</p>
+
+          <div class="hr"></div>
+
+          <div class="row">
+            <button class="ghost" id="btnJumpWelcome">Welcome</button>
+            <button class="ghost" id="btnJumpSetup">Setup</button>
+          </div>
+          <div class="row" style="margin-top:10px">
+            <button class="ghost" id="btnJumpTests">Tests</button>
+            <button class="ghost" id="btnJumpResults">Results</button>
+          </div>
+
+          <div class="hr"></div>
+
+          <h3>Next upgrades (v2)</h3>
+          <ul class="muted small" style="margin:8px 0 0;padding-left:18px">
+            <li>Camera pose assist (chair stand rep detection)</li>
+            <li>EN/中文 bilingual mode</li>
+            <li>Client history dashboard</li>
+          </ul>
+
+          <div class="hr"></div>
+
+          <div class="note"><b>Tip:</b> Mark walkway lines with tape. Use Start/Stop for best gait timing reliability.</div>
+        </aside>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">Saved</div>
+
+  <!-- jsPDF for PDF export -->
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+
+    const screens = {
+      WELCOME: $("screenWelcome"),
+      SETUP: $("screenSetup"),
+      SELECT: $("screenSelect"),
+      TEST: $("screenTest"),
+      RESULTS: $("screenResults")
+    };
+
+    const panels = {
+      balance: $("panelBalance"),
+      gait: $("panelGait"),
+      chair: $("panelChair")
+    };
+
+    let app = {
+      step: "WELCOME",
+      selection: { balance:true, gait:true, chair:true },
+      participant: {},
+      results: null
+    };
+
+    function setStep(step){
+      app.step = step;
+      $("statusStep").textContent = step;
+      Object.values(screens).forEach(s => s.classList.add("hidden"));
+      screens[step].classList.remove("hidden");
+    }
+
+    function toast(msg){
+      const t = $("toast");
+      t.textContent = msg;
+      t.classList.add("show");
+      setTimeout(()=>t.classList.remove("show"), 1100);
+    }
+
+    function nowLocal(){
+      const d = new Date();
+      const pad = (n) => String(n).padStart(2,"0");
+      return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+    }
+    $("testDate").value = nowLocal();
+
+    // Timers
+    const timerState = {
+      bal1:{start:0,running:false,el:"tBal1",input:"bal1sec"},
+      bal2:{start:0,running:false,el:"tBal2",input:"bal2sec"},
+      bal3:{start:0,running:false,el:"tBal3",input:"bal3sec"},
+      gait1:{start:0,running:false,el:"tGait1",input:"gait1sec"},
+      gait2:{start:0,running:false,el:"tGait2",input:"gait2sec"},
+      chair:{start:0,running:false,el:"tChair",input:"chair5sec"}
+    };
+    let raf = null;
+    function fmt(ms){ return (ms/1000).toFixed(2).padStart(5,"0"); }
+    function timerStart(key){
+      const t = timerState[key]; if(!t || t.running) return;
+      t.running = true;
+      t.start = performance.now() - (t.elapsed || 0);
+      pumpTimers();
+    }
+    function timerStop(key){
+      const t = timerState[key]; if(!t) return;
+      t.running = false;
+      t.elapsed = performance.now() - t.start;
+      $(t.input).value = (t.elapsed/1000).toFixed(2);
+      $(t.el).textContent = fmt(t.elapsed);
+    }
+    function timerReset(key){
+      const t = timerState[key]; if(!t) return;
+      t.running = false; t.elapsed = 0;
+      $(t.el).textContent = "00.00";
+      $(t.input).value = "";
+    }
+    function pumpTimers(){
+      if(raf) cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(()=>{
+        let any = false;
+        for(const k in timerState){
+          const t = timerState[k];
+          if(t.running){
+            any = true;
+            const elapsed = performance.now() - t.start;
+            t.elapsed = elapsed;
+            $(t.el).textContent = fmt(elapsed);
+          }
+        }
+        if(any) pumpTimers();
+      });
+    }
+
+    // Navigation
+    $("btnStartSetup").onclick = () => {
+      const ok = $("safety1").checked && $("safety2").checked && $("safety3").checked;
+      if(!ok){ toast("Please complete safety checklist"); return; }
+      setStep("SETUP");
+    };
+    $("btnBackWelcome").onclick = () => setStep("WELCOME");
+    $("btnBackSetup").onclick = () => setStep("SETUP");
+    $("btnBackSelect").onclick = () => setStep("SELECT");
+
+    $("btnToSelect").onclick = () => {
+      const name = $("pName").value.trim();
+      const age = $("pAge").value.trim();
+      const sex = $("pSex").value;
+      const sig = $("signature").value.trim();
+      if(!name || !age || !sex){ toast("Please fill name, age, sex"); return; }
+      if(!$("consent1").checked || !$("consent2").checked || !sig){ toast("Please complete consent + signature"); return; }
+
+      app.participant = {
+        name, age:Number(age), sex,
+        mobile: $("pMobile").value.trim(),
+        walkway_m: Number($("walkLen").value),
+        testDate: $("testDate").value.trim() || nowLocal(),
+        signature: sig
+      };
+      $("gaitLen").value = app.participant.walkway_m + " meters";
+      setStep("SELECT");
+    };
+
+    $("btnBeginTests").onclick = () => {
+      app.selection.balance = $("selBalance").checked;
+      app.selection.gait = $("selGait").checked;
+      app.selection.chair = $("selChair").checked;
+
+      if(!app.selection.balance && !app.selection.gait && !app.selection.chair){
+        toast("Select at least one test"); return;
+      }
+
+      panels.balance.classList.toggle("hidden", !app.selection.balance);
+      panels.gait.classList.toggle("hidden", !app.selection.gait);
+      panels.chair.classList.toggle("hidden", !app.selection.chair);
+
+      const steps = [];
+      if(app.selection.balance) steps.push("BALANCE");
+      if(app.selection.gait) steps.push("GAIT");
+      if(app.selection.chair) steps.push("CHAIR");
+      $("stepper").innerHTML = steps.map((s,i)=>`<span class="step ${i===0?'on':''}">${i+1}. ${s}</span>`).join("");
+      $("sessionLine").textContent = `${app.participant.name} • ${app.participant.age} • ${app.participant.sex} • Walkway: ${app.participant.walkway_m}m • ${app.participant.testDate}`;
+
+      setStep("TEST");
+    };
+
+    // Draft save/load
+    const DRAFT_KEY = "coachDaniel_sppb_draft_v1";
+    function collectFormData(){
+      return {
+        participant: app.participant,
+        selection: app.selection,
+        inputs: {
+          bal1sec:$("bal1sec").value, bal1held:$("bal1held").value,
+          bal2sec:$("bal2sec").value, bal2held:$("bal2held").value,
+          bal3sec:$("bal3sec").value, bal3na:$("bal3na").value,
+          gait1sec:$("gait1sec").value, gait2sec:$("gait2sec").value, gaitNA:$("gaitNA").value,
+          chairSingle:$("chairSingle").value, chairNA:$("chairNA").value,
+          chair5sec:$("chair5sec").value, chairComplete:$("chairComplete").value
+        }
+      };
+    }
+    function applyDraft(d){
+      if(!d) return;
+      if(d.participant){
+        app.participant = d.participant;
+        $("pName").value = d.participant.name || "";
+        $("pAge").value = d.participant.age ?? "";
+        $("pSex").value = d.participant.sex || "";
+        $("pMobile").value = d.participant.mobile || "";
+        $("walkLen").value = String(d.participant.walkway_m || 4);
+        $("testDate").value = d.participant.testDate || nowLocal();
+        $("signature").value = d.participant.signature || "";
+        $("gaitLen").value = (d.participant.walkway_m || 4) + " meters";
+      }
+      if(d.selection){
+        app.selection = d.selection;
+        $("selBalance").checked = !!d.selection.balance;
+        $("selGait").checked = !!d.selection.gait;
+        $("selChair").checked = !!d.selection.chair;
+      }
+      if(d.inputs){
+        for(const k in d.inputs){ if($(k)) $(k).value = d.inputs[k]; }
+      }
+    }
+    $("btnSaveDraft").onclick = () => {
+      localStorage.setItem(DRAFT_KEY, JSON.stringify(collectFormData()));
+      toast("Draft saved");
+    };
+    $("btnLoadDraft").onclick = () => {
+      const raw = localStorage.getItem(DRAFT_KEY);
+      if(!raw){ toast("No draft found"); return; }
+      applyDraft(JSON.parse(raw));
+      $("consent1").checked = true;
+      $("consent2").checked = true;
+      toast("Draft loaded");
+      setStep("SETUP");
+    };
+
+    // Scoring
+    function toNum(v){
+      const n = Number(String(v).trim());
+      return Number.isFinite(n) ? n : null;
+    }
+
+    function scoreBalance(){
+      const held1 = $("bal1held").value;
+      const held2 = $("bal2held").value;
+      const tandemNA = $("bal3na").value === "yes";
+      const tandemSec = toNum($("bal3sec").value);
+
+      const s1 = (held1 === "yes") ? 1 : 0;
+      if(s1 === 0) return { points:0, detail:{rule:"Side-by-side not held 10s → end balance"} };
+
+      const s2 = (held2 === "yes") ? 1 : 0;
+      if(s2 === 0) return { points:1, detail:{rule:"Semi-tandem not held 10s → end balance"} };
+
+      let s3 = 0;
+      if(!tandemNA && tandemSec !== null){
+        if(tandemSec >= 10) s3 = 2;
+        else if(tandemSec >= 3) s3 = 1;
+        else s3 = 0;
+      } else s3 = 0;
+
+      return { points: s1 + s2 + s3, detail:{rule:"Sum balance points"} };
+    }
+
+    function scoreGait(){
+      if($("gaitNA").value === "yes") return { points:0, bestSec:null, detail:{rule:"Not attempted"} };
+
+      const t1 = toNum($("gait1sec").value);
+      const t2 = toNum($("gait2sec").value);
+      const times = [t1,t2].filter(x => x !== null && x > 0);
+      if(times.length === 0) return { points:null, bestSec:null, detail:{rule:"No gait time"} };
+
+      const best = Math.min(...times);
+      const len = Number(app.participant.walkway_m || 4);
+
+      let p = 0;
+      if(len === 4){
+        if(best > 8.70) p = 1;
+        else if(best >= 6.21 && best <= 8.70) p = 2;
+        else if(best >= 4.82 && best <= 6.20) p = 3;
+        else if(best < 4.82) p = 4;
+      } else {
+        if(best > 6.52) p = 1;
+        else if(best >= 4.66 && best <= 6.52) p = 2;
+        else if(best >= 3.62 && best <= 4.65) p = 3;
+        else if(best < 3.62) p = 4;
+      }
+      return { points:p, bestSec:best, detail:{rule:"Best of 2 trials"} };
+    }
+
+    function scoreChair(){
+      if($("chairNA").value === "yes") return { points:0, sec:null, detail:{rule:"Not attempted"} };
+      const single = $("chairSingle").value;
+      if(single === "fail") return { points:0, sec:null, detail:{rule:"Single stand failed"} };
+      if(single !== "pass") return { points:null, sec:null, detail:{rule:"Single stand not selected"} };
+
+      const complete = $("chairComplete").value;
+      if(complete === "no") return { points:0, sec:null, detail:{rule:"Not completed / >60s"} };
+      if(complete !== "yes") return { points:null, sec:null, detail:{rule:"Completion not selected"} };
+
+      const t = toNum($("chair5sec").value);
+      if(t === null || t <= 0) return { points:null, sec:null, detail:{rule:"No chair time"} };
+
+      let p = 0;
+      if(t >= 16.70) p = 1;
+      else if(t >= 13.70 && t <= 16.69) p = 2;
+      else if(t >= 11.20 && t <= 13.69) p = 3;
+      else if(t <= 11.19) p = 4;
+
+      return { points:p, sec:t, detail:{rule:"Chair cut points"} };
+    }
+
+    function interpretTotal(total){
+      if(total === null) return "—";
+      if(total <= 4) return "Lower performance range. Consider closer supervision and gradual progression. (Guidance only)";
+      if(total <= 7) return "Moderate performance range. Focus on strength, balance, and walking confidence. (Guidance only)";
+      if(total <= 9) return "Good functional performance range. Maintain and progress safely. (Guidance only)";
+      return "High functional performance range. Maintain fitness and fall-prevention habits. (Guidance only)";
+    }
+
+    $("btnCompute").onclick = () => {
+      const chosen = app.selection;
+
+      const bal = chosen.balance ? scoreBalance() : { points:null };
+      const gait = chosen.gait ? scoreGait() : { points:null };
+      const chair = chosen.chair ? scoreChair() : { points:null };
+
+      const missing = [];
+      if(chosen.balance && bal.points === null) missing.push("Balance inputs");
+      if(chosen.gait && gait.points === null) missing.push("Gait inputs");
+      if(chosen.chair && chair.points === null) missing.push("Chair inputs");
+      if(missing.length){ toast("Missing: " + missing.join(", ")); return; }
+
+      let total = 0;
+      if(chosen.balance) total += bal.points;
+      if(chosen.gait) total += gait.points;
+      if(chosen.chair) total += chair.points;
+
+      const session = {
+        appVersion: "SPPB-Web-v1",
+        generatedAt: nowLocal(),
+        participant: app.participant,
+        selection: chosen,
+        rawInputs: collectFormData().inputs,
+        scoring: { balance: bal, gait: gait, chair: chair, total }
+      };
+
+      app.results = session;
+
+      $("kBal").textContent = chosen.balance ? bal.points : "—";
+      $("kGait").textContent = chosen.gait ? gait.points : "—";
+      $("kChair").textContent = chosen.chair ? chair.points : "—";
+      $("kTotal").textContent = total;
+
+      $("resultHeader").textContent = `${app.participant.name} • ${app.participant.age} • ${app.participant.sex} • ${app.participant.testDate}`;
+      $("interpretation").textContent = interpretTotal(total);
+      $("resultJson").textContent = JSON.stringify(session, null, 2);
+
+      localStorage.setItem("coachDaniel_sppb_lastResult_v1", JSON.stringify(session));
+      setStep("RESULTS");
+    };
+
+    // Export
+    function downloadBlob(filename, content, mime){
+      const blob = new Blob([content], {type: mime});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(()=>URL.revokeObjectURL(url), 800);
+    }
+
+    $("btnExportJSON").onclick = () => {
+      if(!app.results){ toast("No results"); return; }
+      const safeName = (app.participant.name || "participant").replace(/[^\w]+/g,"_");
+      downloadBlob(`SPPB_${safeName}_${Date.now()}.json`, JSON.stringify(app.results, null, 2), "application/json");
+    };
+
+    $("btnExportPDF").onclick = () => {
+      if(!app.results){ toast("No results"); return; }
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({ unit:"pt", format:"a4" });
+
+      const m = 44; let y = 56;
+
+      const line = (txt, size=11, bold=false) => {
+        doc.setFont("helvetica", bold ? "bold":"normal");
+        doc.setFontSize(size);
+        doc.text(txt, m, y);
+        y += size + 8;
+      };
+
+      const kv = (k,v) => {
+        doc.setFont("helvetica","bold"); doc.setFontSize(10);
+        doc.text(k, m, y);
+        doc.setFont("helvetica","normal");
+        doc.text(String(v ?? ""), m+160, y);
+        y += 16;
+      };
+
+      line("Coach Daniel — SPPB Report", 16, true);
+      line("Short Physical Performance Battery (SPPB) — session summary", 11, false);
+      y += 6; doc.line(m, y, 550, y); y += 18;
+
+      kv("Participant", app.results.participant.name);
+      kv("Age / Sex", `${app.results.participant.age} / ${app.results.participant.sex}`);
+      kv("Mobile", app.results.participant.mobile || "-");
+      kv("Date/Time", app.results.participant.testDate);
+      kv("Walkway", `${app.results.participant.walkway_m} m`);
+      kv("Signature", app.results.participant.signature);
+
+      y += 8; doc.line(m, y, 550, y); y += 18;
+
+      line("Scores", 12, true);
+      const s = app.results.scoring, sel = app.results.selection;
+      kv("Balance (0–4)", sel.balance ? s.balance.points : "-");
+      kv("Gait (0–4)", sel.gait ? s.gait.points : "-");
+      kv("Chair (0–4)", sel.chair ? s.chair.points : "-");
+      kv("Total (0–12)", s.total);
+
+      y += 8; doc.line(m, y, 550, y); y += 18;
+
+      line("Guidance (non-diagnostic)", 12, true);
+      doc.setFont("helvetica","normal"); doc.setFontSize(10);
+      const guidance = interpretTotal(s.total);
+      const wrap = doc.splitTextToSize(guidance, 520);
+      doc.text(wrap, m, y);
+      y += wrap.length * 14 + 10;
+
+      line("Notes", 12, true);
+      doc.setFontSize(10);
+      doc.text(doc.splitTextToSize("• Stop test if unsafe. • Final interpretation is the clinician/coach’s responsibility.", 520), m, y);
+
+      const safeName = (app.results.participant.name || "participant").replace(/[^\w]+/g,"_");
+      doc.save(`SPPB_${safeName}_${Date.now()}.pdf`);
+    };
+
+    $("btnNewTest").onclick = () => location.reload();
+
+    // Right panel jumps
+    $("btnJumpWelcome").onclick = () => setStep("WELCOME");
+    $("btnJumpSetup").onclick = () => setStep("SETUP");
+    $("btnJumpTests").onclick = () => app.participant.name ? setStep("TEST") : setStep("SETUP");
+    $("btnJumpResults").onclick = () => {
+      const raw = localStorage.getItem("coachDaniel_sppb_lastResult_v1");
+      if(!raw){ toast("No saved results yet"); return; }
+      app.results = JSON.parse(raw);
+      const chosen = app.results.selection;
+      $("kBal").textContent = chosen.balance ? app.results.scoring.balance.points : "—";
+      $("kGait").textContent = chosen.gait ? app.results.scoring.gait.points : "—";
+      $("kChair").textContent = chosen.chair ? app.results.scoring.chair.points : "—";
+      $("kTotal").textContent = app.results.scoring.total;
+      $("resultHeader").textContent = `${app.results.participant.name} • ${app.results.participant.age} • ${app.results.participant.sex} • ${app.results.participant.testDate}`;
+      $("interpretation").textContent = interpretTotal(app.results.scoring.total);
+      $("resultJson").textContent = JSON.stringify(app.results, null, 2);
+      setStep("RESULTS");
+    };
+  </script>
+</body>
+</html>
